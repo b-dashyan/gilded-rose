@@ -19,8 +19,10 @@ export class GildedRose {
 
   updateQuality() {
     for (const item of this.items) {
+      const isAgedBrie = item.name === "Aged Brie";
+
       if (
-        item.name != "Aged Brie" &&
+        !isAgedBrie &&
         item.name != "Backstage passes to a TAFKAL80ETC concert"
       ) {
         if (item.quality > 0) {
@@ -49,7 +51,7 @@ export class GildedRose {
         item.sellIn = item.sellIn - 1;
       }
       if (item.sellIn < 0) {
-        if (item.name != "Aged Brie") {
+        if (!isAgedBrie) {
           if (item.name != "Backstage passes to a TAFKAL80ETC concert") {
             if (item.quality > 0) {
               if (item.name != "Sulfuras, Hand of Ragnaros") {
