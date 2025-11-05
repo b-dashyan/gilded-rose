@@ -22,6 +22,7 @@ export class GildedRose {
       const isAgedBrie = item.name === "Aged Brie";
       const isBackstagePass =
         item.name === "Backstage passes to a TAFKAL80ETC concert";
+      const isSulfuras = item.name === "Sulfuras, Hand of Ragnaros";
 
       if (isAgedBrie) {
         if (item.quality < 50) {
@@ -55,16 +56,16 @@ export class GildedRose {
         }
       } else {
         if (item.quality > 0) {
-          if (item.name != "Sulfuras, Hand of Ragnaros") {
+          if (!isSulfuras) {
             item.quality = item.quality - 1;
           }
         }
-        if (item.name != "Sulfuras, Hand of Ragnaros") {
+        if (!isSulfuras) {
           item.sellIn = item.sellIn - 1;
         }
         if (item.sellIn < 0) {
           if (item.quality > 0) {
-            if (item.name != "Sulfuras, Hand of Ragnaros") {
+            if (!isSulfuras) {
               item.quality = item.quality - 1;
             }
           }
