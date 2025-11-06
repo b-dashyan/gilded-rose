@@ -1,6 +1,10 @@
 import { Item } from "./Item";
 
-export class UpdateService {
+export interface IUpdateService {
+  updateItems(items: Array<Item>): void;
+}
+
+export class UpdateService implements IUpdateService {
   updateItems(items: Array<Item>): void {
     for (const item of items) {
       this.updateItem(item);

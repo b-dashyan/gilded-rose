@@ -1,13 +1,13 @@
 import { Item } from "./Item";
-import { UpdateService } from "./UpdateService";
+import { UpdateService, IUpdateService } from "./UpdateService";
 
 export class GildedRose {
   items: Array<Item>;
-  private readonly updateService: UpdateService;
+  private readonly updateService: IUpdateService;
 
   constructor(
     items = [] as Array<Item>,
-    updateService: UpdateService = new UpdateService()
+    updateService: IUpdateService = new UpdateService()
   ) {
     this.items = items;
     this.updateService = updateService;
