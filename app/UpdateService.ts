@@ -8,9 +8,14 @@ export class UpdateService implements IUpdateService {
   private readonly MIN_QUALITY = 0;
   private readonly MAX_QUALITY = 50;
 
+  private readonly CONJURED = "Conjured";
   private readonly AGED_BRIE = "Aged Brie";
   private readonly SULFURAS = "Sulfuras, Hand of Ragnaros";
   private readonly BACKSTAGE_PASS = "Backstage passes to a TAFKAL80ETC concert";
+
+  private isConjuredItem({ name }: Item): boolean {
+    return name.includes(this.CONJURED);
+  }
 
   private isAgedBrie({ name }: Item): boolean {
     return name.includes(this.AGED_BRIE);
@@ -62,11 +67,16 @@ export class UpdateService implements IUpdateService {
   }
 
   private getQualityDelta(item: Item): number {
-    if (this.isBackstagePass(item)) {
-      return this.getBackstagePassQualityDelta(item);
-    } else {
-      return this.getRegularItemQualityDelta(item);
+    let delta = this.isBackstagePass(item)
+      ? this.getBackstagePassQualityDelta(item)
+      : this.getRegularItemQualityDelta(item);
+
+    // Quality delta doubles for 'Conjured' items
+    if (this.isConjuredItem(item)) {
+      delta = delta * 2;
     }
+
+    return delta;
   }
 
   private clampQuality(quality: number): number {
