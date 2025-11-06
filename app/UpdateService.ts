@@ -5,6 +5,22 @@ export interface IUpdateService {
 }
 
 export class UpdateService implements IUpdateService {
+  private readonly AGED_BRIE = "Aged Brie";
+  private readonly SULFURAS = "Sulfuras, Hand of Ragnaros";
+  private readonly BACKSTAGE_PASS = "Backstage passes to a TAFKAL80ETC concert";
+
+  private isAgedBrie({ name }: Item): boolean {
+    return name.includes(this.AGED_BRIE);
+  }
+
+  private isBackstagePass({ name }: Item): boolean {
+    return name.includes(this.BACKSTAGE_PASS);
+  }
+
+  private isSulfuras({ name }: Item): boolean {
+    return name.includes(this.SULFURAS);
+  }
+
   updateItems(items: Array<Item>): void {
     for (const item of items) {
       this.updateItem(item);
@@ -12,12 +28,7 @@ export class UpdateService implements IUpdateService {
   }
 
   private updateItem(item: Item): void {
-    const isAgedBrie = item.name === "Aged Brie";
-    const isBackstagePass =
-      item.name === "Backstage passes to a TAFKAL80ETC concert";
-    const isSulfuras = item.name === "Sulfuras, Hand of Ragnaros";
-
-    if (isAgedBrie) {
+    if (this.isAgedBrie(item)) {
       if (item.quality < 50) {
         item.quality = item.quality + 1;
       }
@@ -27,7 +38,7 @@ export class UpdateService implements IUpdateService {
           item.quality = item.quality + 1;
         }
       }
-    } else if (isBackstagePass) {
+    } else if (this.isBackstagePass(item)) {
       if (item.quality < 50) {
         item.quality = item.quality + 1;
         if (item.sellIn < 11) {
@@ -47,7 +58,7 @@ export class UpdateService implements IUpdateService {
       if (item.sellIn < 0) {
         item.quality = item.quality - item.quality;
       }
-    } else if (isSulfuras) {
+    } else if (this.isSulfuras(item)) {
       // Sulfuras remains unchanged
     } else {
       // Regular items
