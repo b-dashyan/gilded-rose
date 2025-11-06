@@ -21,56 +21,58 @@ export class UpdateService implements IUpdateService {
     return name.includes(this.SULFURAS);
   }
 
-  updateItems(items: Array<Item>): void {
-    for (const item of items) {
-      this.updateItem(item);
-    }
+  private updateItemSellIn(item: Item): void {
+    item.sellIn = item.sellIn - 1;
   }
 
   private updateItem(item: Item): void {
-    if (this.isAgedBrie(item)) {
-      if (item.quality < 50) {
-        item.quality = item.quality + 1;
-      }
-      item.sellIn = item.sellIn - 1;
-      if (item.sellIn < 0) {
+    if (!this.isSulfuras(item)) {
+      this.updateItemSellIn(item);
+
+      if (this.isAgedBrie(item)) {
         if (item.quality < 50) {
           item.quality = item.quality + 1;
         }
-      }
-    } else if (this.isBackstagePass(item)) {
-      if (item.quality < 50) {
-        item.quality = item.quality + 1;
-        if (item.sellIn < 11) {
+        if (item.sellIn < 0) {
           if (item.quality < 50) {
             item.quality = item.quality + 1;
           }
         }
-        if (item.sellIn < 6) {
-          if (item.quality < 50) {
-            item.quality = item.quality + 1;
+      } else if (this.isBackstagePass(item)) {
+        if (item.quality < 50) {
+          item.quality = item.quality + 1;
+          if (item.sellIn < 11) {
+            if (item.quality < 50) {
+              item.quality = item.quality + 1;
+            }
+          }
+          if (item.sellIn < 6) {
+            if (item.quality < 50) {
+              item.quality = item.quality + 1;
+            }
           }
         }
-      }
 
-      item.sellIn = item.sellIn - 1;
-
-      if (item.sellIn < 0) {
-        item.quality = item.quality - item.quality;
-      }
-    } else if (this.isSulfuras(item)) {
-      // Sulfuras remains unchanged
-    } else {
-      // Regular items
-      if (item.quality > 0) {
-        item.quality = item.quality - 1;
-      }
-      item.sellIn = item.sellIn - 1;
-      if (item.sellIn < 0) {
+        if (item.sellIn < 0) {
+          item.quality = item.quality - item.quality;
+        }
+      } else {
+        // Regular items
         if (item.quality > 0) {
           item.quality = item.quality - 1;
         }
+        if (item.sellIn < 0) {
+          if (item.quality > 0) {
+            item.quality = item.quality - 1;
+          }
+        }
       }
+    }
+  }
+
+  updateItems(items: Array<Item>): void {
+    for (const item of items) {
+      this.updateItem(item);
     }
   }
 }
