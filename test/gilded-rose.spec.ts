@@ -1,4 +1,5 @@
-import { Item, GildedRose } from "@/gilded-rose";
+import { Item } from "@/Item";
+import { GildedRose } from "@/GildedRose";
 
 test("sellIn decreases at the end of each day", () => {
   const gildedRose = new GildedRose([new Item("test item", 10, 20)]);
