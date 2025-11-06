@@ -137,3 +137,27 @@ test("'Backstage passes' quality hits max 50 when there are 10 days or less left
   const items = gildedRose.update();
   expect(items[0].quality).toBe(50);
 });
+
+test("'Conjured' items degrade / appreciate twice as fast as normal items", () => {
+  const gildedRose = new GildedRose([
+    new Item("Conjured Mana Cake", 3, 20),
+    new Item("Conjured Aged Brie", 10, 20),
+  ]);
+  const items = gildedRose.update();
+  expect(items[0].sellIn).toBe(2);
+  expect(items[0].quality).toBe(18); // 20 - 2 = 18 (degrades by 2)
+  expect(items[1].sellIn).toBe(9);
+  expect(items[1].quality).toBe(22); // 20 + 2 = 22 (appreciates by 2)
+});
+
+test("'Conjured Backstage passes' with edge cases", () => {
+  const gildedRose = new GildedRose([
+    new Item("Conjured Backstage passes to a TAFKAL80ETC concert", 5, 30),
+    new Item("Conjured Backstage passes to a TAFKAL80ETC concert", 0, 25),
+  ]);
+  const items = gildedRose.update();
+  expect(items[0].sellIn).toBe(4);
+  expect(items[0].quality).toBe(36); // Should get +3 base, then doubled = +6
+  expect(items[1].sellIn).toBe(-1);
+  expect(items[1].quality).toBe(0); // Should drop to 0 after concert, regardless of conjured
+});
