@@ -13,7 +13,7 @@ export class GildedRose {
     this.updateService = updateService;
   }
 
-  updateQuality() {
+  update() {
     this.updateService.updateItems(this.items);
     return this.items;
   }
